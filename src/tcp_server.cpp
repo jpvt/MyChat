@@ -14,6 +14,10 @@
 #include <thread>
 #include <mutex>
 
+#include "../include/Client.h"
+#include "../include/Monitor.h"
+
+
 #define MAX_CLIENTS 100
 #define BUFFER_SIZE 4096
 
@@ -29,7 +33,7 @@ int main(int argc, char ** argv){
 		return 1;
 	}
 
-	cout << "Starting chat " << server_name << "on port " << server_port << endl;
+	cout << "Starting chat " << server_name << " on port " << server_port << endl;
 
 	//Listening configs
 	int listening = socket(AF_INET, SOCK_STREAM, 0);
