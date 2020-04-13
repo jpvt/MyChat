@@ -44,7 +44,7 @@ int main(int argc, char ** argv){
 	server_addr.sin_port = htons(server_port);
 	inet_pton(AF_INET, "0.0.0.0", &server_addr.sin_addr); //binding information
 
-	if(bind(listening, AF_INET, (sockaddr*)&server_addr, sizeof(server_addr)) == -1){
+	if(bind(listening, (sockaddr*)&server_addr, sizeof(server_addr)) == -1){
 		cerr << "ERROR: Can't bind to IP/Port\nERRO: Não conseguiu conectar com IP/Porta\n";
 		return -2;
 	}
@@ -83,7 +83,7 @@ int main(int argc, char ** argv){
 
 	if(result){
 
-		cout << host << " connected on " << service << endl;
+		cout << host << " connected on " << svc << endl;
 	}else{
 
 		inet_ntop(AF_INET, &client.sin_addr, host, NI_MAXHOST);
