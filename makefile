@@ -1,15 +1,14 @@
 CC = g++
+EXECUTABLE = tcp_server tcp_client
 
 all: tcp_server tcp_client client monitor
 
 tcp_server: src/tcp_server.cpp
-	g++ -o tcp_server src/tcp_server.cpp -pthread -std=c++11
+	g++ -o tcp_server src/tcp_server.cpp -pthread -std=c++11 -g
 
 tcp_client: src/tcp_client.cpp
-	g++ -o tcp_client src/tcp_client.cpp -pthread -std=c++11
+	g++ -o tcp_client src/tcp_client.cpp -pthread -std=c++11 -g
 
-monitor: src/monitor.cpp
-	g++ -o monitor src/monitor.cpp -pthread -std=c++11
-
-client: src/client.cpp
-	g++ -o client src/client.cpp -pthread -std=c++11
+clean:
+	@echo "\033[31mCleaning obj directory... \033[0m"
+	@rm $(EXECUTABLE) -f

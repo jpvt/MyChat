@@ -16,6 +16,10 @@
 
 #define BUFFER_SIZE 4096
 
+#include "../include/Client.h"
+#include "../include/Monitor.h"
+#include "../include/Server.h"
+
 /*
 Create a socket;
 Create a Server Address Structure for the server we're connecting with;
@@ -41,55 +45,9 @@ int main(int argc, char ** argv){
 		return 1;
     }
 
-    //Create a socket;
-	int sock = socket(AF_INET, SOCK_STREAM, 0);
-	if(sock == -1){
-		cerr << "ERROR: Can't Create Socket\nERRO: Não conseguiu criar socket\n";
-		return -1;
-	}
+    Client client(username, client_ip, port);
+    client.run();
 
-    //Create a Server Address Structure for the server we're connecting with;
-    sockaddr_in client_addr;
-    client_addr.sin_family = AF_INET;
-    client_addr.sin_port = htons(port);
-    inet_pton(AF_INET, client_ip.c_str(), &client_addr.sin_addr);
-
-    //Connect to the server on the socket;
-    int connect_result = connect(sock, (sockaddr *)&client_addr, sizeof(client_addr));
-
-    if(connect_result == -1){
-        cerr << "ERROR: Failed to connect to server !\nERRO: Falha ao conectar com servidor\n";
-        return -2;
-    }
-
-    //While loop:
-    char buf[BUFFER_SIZE];
-    string msg;
-    do{
-        //Enter lines of text;
-        cout <<"> ";
-        getline(cin, msg);
-
-        //Send to server;
-        int send_result = send(sock, msg.c_str(), msg.size() + 1, 0);
-        if(send_result == -1){
-            cerr <<"Failed to send message\r\nERRO: Falha ao enviar mensagem\r\n";
-            continue;
-        }
-
-        //Wait for response;
-        memset(buf,0, BUFFER_SIZE);
-        int bytes_received = recv(sock, buf, BUFFER_SIZE, 0);
-        if(bytes_received == -1){
-            cout << "ERROR: Error while getting response from server \r\nERRO: Erro ao receber resposta de servidor\r\n";
-        }else{
-            //Display response;
-            cout << "SERVER> " <<string(buf, bytes_received) << "\r\n";
-        }
-    }while(true);
-
-    //Close the socket;
-    close(sock);
 
     return 0;
 }
